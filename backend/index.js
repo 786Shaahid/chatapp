@@ -17,12 +17,11 @@ const io= new Server(server,{
 });
 /** Socket Configuration */
   io.on('connection',(socket)=>{
-    socket.on('joinRoom', (roomId) => {
-        socket.join(roomId);
-      });
+      console.log('connected',socket.id);
 
-      socket.on("sendMessage",({roomId,userId,message})=>{
-        io.to(roomId).emit("chat",{ message,userId} )
+      socket.on("sendMessage",(data)=>{
+        // console.log(data);
+        io.emit("chatMessage",data )
       });
 
       socket.on('disconnect',()=>{
@@ -32,9 +31,9 @@ const io= new Server(server,{
 
 
 
-app.use(express.json({extended:true}));
-app.use(express.urlencoded({ extended: true }));
+      app.use(express.json({extended:true}));
+      app.use(express.urlencoded({ extended: true }));
 
-app.listen(port,()=>{
+server.listen(port,()=>{
      console.log(`Server is listening on port :${port}`);
 })

@@ -5,7 +5,7 @@ import { red } from '@mui/material/colors';
 // import MailIcon from '@mui/icons-material/Mail';
 import AddIcon from '@mui/icons-material/Add';
 
-function Sidebar() {
+function Sidebar({users}) {
   return (
     <Stack >
         <Card>
