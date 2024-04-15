@@ -38,13 +38,16 @@ const io= new Server(server,{
       });
       // console.log('hii',path.join(path.resolve(), "../frontend", "dist"));
     
-        // Serve static files from the client's build/dist folder
-        app.use(express.static(path.join(path.resolve(), "../frontend", "dist")));
+      if (process.env.NODE_ENV === "production") {
+          // Serve static files from the client's build/dist folder
+          app.use(express.static(path.join(path.resolve(), "../frontend", "dist")));
+          // Route for serving the React app
+          app.get("*", (req, res) => {
+            return res.sendFile(path.join(path.resolve(), "../frontend", "dist", "index.html"));
+          });
+          
+        }
       
-        // Route for serving the React app
-        app.get("*", (req, res) => {
-          return res.sendFile(path.join(path.resolve(), "../frontend", "dist", "index.html"));
-        });
       // } else {
       //   app.all("/*", (req, res) => {
       //     return res.status(400).json({
