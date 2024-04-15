@@ -13,8 +13,6 @@ function MessagesBox({ chatMessages, data }) {
 
   const handleClick = (userId) => {
     let item = chatMessages.find(item => item.id === userId);
-    console.log(item);
-
     if (likedBy.includes(userId)) {
       setLikes(prev => prev + item.likes--)
       setLikedBy(likedBy.filter(id => id !== userId));
@@ -25,6 +23,8 @@ function MessagesBox({ chatMessages, data }) {
     }
 
   };
+
+
   useEffect(() => {
     if (messageScroll.current) {
       messageScroll.current.scrollIntoView({ behavior: "smooth" });

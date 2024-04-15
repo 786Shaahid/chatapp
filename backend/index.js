@@ -1,13 +1,22 @@
+import env from 'dotenv';
+env.config();
 import express from 'express';
 import { Server } from 'socket.io';
 import http from 'http';
-import { Socket } from 'dgram';
+import path from 'path';
 
 
 const app=express();
-const port=8080;
+const port=process.env.PORT;
 const server=http.createServer(app);
 
+/** SERVER CONFIGURATION */
+
+app.use(express.json({extended:true}));
+app.use(express.urlencoded({ extended: true }));
+
+
+/** Socket Configuration */
 const io= new Server(server,{
     cors:{
         origin:'http://localhost:3000',
@@ -15,7 +24,6 @@ const io= new Server(server,{
         transports: ['websocket', 'polling']
     }
 });
-/** Socket Configuration */
   io.on('connection',(socket)=>{
       console.log('connected',socket.id);
 
@@ -23,17 +31,32 @@ const io= new Server(server,{
         // console.log(data);
         io.emit("chatMessage",data )
       });
-
+     
       socket.on('disconnect',()=>{
         console.log("User disconnect",socket.id);
        })
       });
+      // console.log('hii',path.join(path.resolve(), "../frontend", "dist"));
+    
+        // Serve static files from the client's build/dist folder
+        app.use(express.static(path.join(path.resolve(), "../frontend", "dist")));
+      
+        // Route for serving the React app
+        app.get("*", (req, res) => {
+          return res.sendFile(path.join(path.resolve(), "../frontend", "dist", "index.html"));
+        });
+      // } else {
+      //   app.all("/*", (req, res) => {
+      //     return res.status(400).json({
+      //       success: false,
+      //       error: "no api found",
+      //     });
+      //   });
+      // }
+      
+      
 
-
-
-      app.use(express.json({extended:true}));
-      app.use(express.urlencoded({ extended: true }));
-
+      /** LISTENING THE SERVER */
 server.listen(port,()=>{
      console.log(`Server is listening on port :${port}`);
 })
