@@ -10,7 +10,7 @@ Our group chat app, powered by React, Material-UI, Socket.IO, Express , and Node
 
 ## API Reference
 
-#### URL = https://asset-management-0au6.onrender.com
+#### URL = 
 
 
 
@@ -24,29 +24,22 @@ Our group chat app, powered by React, Material-UI, Socket.IO, Express , and Node
 
 To run this project locally, you will need to add the following environment variables to your .env file created in root directory of your project
 
-- JWT_SECRET
-- MONGO_DEV_URL
-- AWS_ACCESS_ID
-- AWS_SECRET_ACCESS_KEY
-- AWS_S3_REGION
-- AWS_S3_BUCKET_NAME
+PORT
 
-#### Note: Also, you will need to update proxy in vite.config() by localhost:${port_number}
+#### Note: Also, you will need to update proxy in package.json by localhost:${port_number}
 
 ## Screenshots
 
-### Mongo DB record for an asset
+###  On Destop 
 
-![App Screenshot](./screenshots/assetDbRecord.jpg)
+![App Screenshot](./screenshots/desk1.jpg)
 
-### Mongo DB record for an asset soft delete
+### On Destop
 
-![App Screenshot](./screenshots/assetSoftDeleteDbRecord.jpg)
+![App Screenshot](./screenshots/desk2.jpg)
 
-### Asset Folder Name as the uploaded folder in AWS S3 Bucket
+### On Mobile screen
 
-![App Screenshot](./screenshots/assetBucketRecord.jpg)
+![App Screenshot](./screenshots/mobile.jpg)
 
-## cURL - Refer Api Reference as well
 
-### create a user
