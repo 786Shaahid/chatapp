@@ -1,29 +1,30 @@
 import React from 'react'
-import {Stack,Divider,ListItemAvatar,Fab,Card,CardHeader,Avatar,Typography,Box,List,ListItem,ListItemText, ListItemButton  } from '@mui/material';
+import {Stack,Fab,Card,CardHeader,Avatar,Typography,Box,List} from '@mui/material';
 import { red } from '@mui/material/colors';
-// import InboxIcon from '@mui/icons-material/MoveToInbox';
-// import MailIcon from '@mui/icons-material/Mail';
+import ListItmes from './ListItems.js';
 import AddIcon from '@mui/icons-material/Add';
 
-function Sidebar({users}) {
+function Sidebar({users,user}) {
+
   return (
     <Stack >
+      {/* SIDEBAR CARD HEADER */}
         <Card>
         <CardHeader titleTypographyProps={{fontSize:"1.1rem"}}
         avatar={
             <>
-            
           <Avatar sx={{ bgcolor: red[500],width:'55px', height:'55px',position:'relative', overflow:'visible'}} aria-label="recipe" >
-            R
+            G
           </Avatar>
           <Box sx={{width:'15px', height:'15px',bgcolor:"yellowGreen", position:'absolute', top:'3em', left:"4rem" ,borderRadius:"50%", outline:'5px solid white' }}>
           </Box>
           </>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title="Group Chat"
+        subheader="April 14, 2024"
       />  
         </Card>  
+
         <Stack flexDirection={'row'} justifyContent="space-around" alignItems={'center'} mt={5 } >
 <Typography variant='h6'>Conversations</Typography>
 <Fab size='small' color="primary" aria-label="add">
@@ -34,23 +35,17 @@ function Sidebar({users}) {
          <Box sx={theme=>({
          ml:"2rem"
          })}>
-         <List >
-        <ListItem alignItems="center" justifyContent='center' >
-          <ListItemButton>
-
-        <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Brunch this weekend?"
+ 
+  <List >
+      {
+    users.length ?     users?.map((user,index)=>(<>
+             <ListItmes ListData={user} key={index}/>
+        </>)):(<ListItmes ListData={user} />)
+      }
+ </List>
          
-        />
-          </ListItemButton>
-      </ListItem>
-      <Divider variant="inset" component="li" />
         
-
-      </List>
+        
 
          </Box>
 

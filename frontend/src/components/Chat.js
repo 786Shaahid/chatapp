@@ -1,70 +1,60 @@
-import { Avatar, Box, CardHeader, Divider, Fab, IconButton, Stack, TextField, Typography } from '@mui/material';
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { Box, CardHeader, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
+import React, { useEffect, useMemo, useState } from 'react'
 import Groups2Icon from '@mui/icons-material/Groups2';
-import { blue, red } from '@mui/material/colors';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import { blue } from '@mui/material/colors';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import SendIcon from '@mui/icons-material/Send';
 import EmojiPicker from 'emoji-picker-react';
 import io from 'socket.io-client';
+import MessagesBox from './MessagesBox';
+
+function SetUsersFromSocket(messages, setUsers) {
+  const uniqueUsers = messages.filter((message, index, self) => {
+    return self.findIndex(m => m.user === message.user) === index;
+  });
+  console.log(uniqueUsers);
+  setUsers(uniqueUsers);
+}
 
 
-
-function Chat({ user ,length}) {
-console.log(length);
+function Chat({ user, setUsers, length }) {
   const [message, setMessage] = useState('');
-  const [count, setCount] = useState(0);
   const [chatMessages, setChatMessages] = useState([]);
-  const [liked, setLike] = useState(false);
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
-  const messageScroll=useRef(null);
+
+
+  //1. setUser from socket server
+  useEffect(() => {
+    SetUsersFromSocket(chatMessages, setUsers)
+  }, [chatMessages, setUsers])
+
+  //2. socket connection
   const socket = useMemo(
     () =>
       io('http://localhost:8080', { transports: ["websocket", 'polling'] }),
     []
   );
-
-  useEffect(() => {
-    if (messageScroll.current) {
-      messageScroll.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [chatMessages]);
-
+  //  SET MESSAGE FROM SOCKET   
   useEffect(() => {
     socket.on("connect", () => {
       console.log("userId connected!", socket.id);
     });
-
     socket.on('chatMessage', (msg) => {
       setChatMessages([...chatMessages, msg]);
-      // console.log(chatMessages.length);
     });
-
-
     return () => {
-      socket.off('chat message');
+      socket.off('chatMessage');
     };
   }, [socket, chatMessages]);
 
 
 
-
-
-
-  const handleClick = () => {
-    setLike(!liked);
-    setCount(count + 1)
-
-  };
   const handleEmojiClick = (emoji) => {
     setMessage(message + " " + emoji.emoji);
     setIsEmojiPickerOpen(false);
   };
 
-  //  const handleEmojiPicker=()=>{
 
-  //  }
   const handleSendMessage = () => {
     if (message.trim() !== '') {
       const time = new Date().toLocaleTimeString();
@@ -80,6 +70,7 @@ console.log(length);
       setMessage('');
     }
   }
+
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -90,68 +81,43 @@ console.log(length);
 
   return (
     <Stack sx={{ p: '2px', bgcolor: 'whitesmoke' }}>
-      {/* THIS IS CHAT BOX MESSAGE HEADER */}
+      {/* 1. THIS IS CHAT BOX MESSAGE HEADER */}
       <CardHeader titleTypographyProps={{ fontSize: "1.1rem", }}
         title={user}
         subheader={new Date().toLocaleDateString()}
         action={
           <Box display={'flex'} p={2} sx={{ justifyContent: 'space-around', opacity: '0.6' }} fontSize={20}>
             <Box display={'flex'} justifyContent={'space-evenly'} width={'5rem'} >
-              <Typography>3</Typography>
+              <Typography>{length === 0 ? "1" : length}</Typography>
               <Divider orientation="vertical" />
-              <Typography>100</Typography>
             </Box>
             <Groups2Icon />
           </Box>
         }
       />
-      <Divider orientation="" flexItem sx={{ borderWidth: '1.5px' }} />
-      {/* THIS IS MESSAGE CONTAINER */}
+      <Divider flexItem sx={{ borderWidth: '1.5px' }} />
+
+      {/*2.  THIS IS MESSAGE CONTAINER */}
       <Stack    >
-        <Stack p={2}   height='78vh' spacing={1} sx={{overflow:'auto'}} >
-        {
-          chatMessages.length ? chatMessages?.map((data, index) => (
-            <>
-              <Stack justifyContent='flex-start' key={index}  ref={messageScroll} >
-                <CardHeader
-                  avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                      {data.user[0]}
-                    </Avatar>
-                  }
-                  title={<div style={{ display: 'flex', alignItems: 'center', fontSize: '17px', textTransform: 'capitalize',fontWeight:'600',opacity:'0.9' }}>{data.user} <span style={{ marginLeft: '8px', fontSize: '0.75rem', color: '#777' }}>{data.time}</span></div>}
-                />
-                <Box display={'flex'}>
-                  <Stack sx={theme => ({ mt: '-20px', ml: '60px', p: '3' })} direction={{ xs: 'column', md: 'row' }} spacing={1} >
-                    <Typography variant='body1' sx={theme => ({
-                      bgcolor:'white', p: '2px 10px', borderRadius: '8px', fontSize: '17px', fontWeight: '500',
-                      [theme.breakpoints.up('md')]: {
-                        maxWidth: '30rem'
-                      }
-                    })} >{data.text}</Typography>
-                    <Stack direction={'row'} alignItems={'center'}>
-                      <Fab onClick={handleClick} color={liked ? 'primary' : 'default'} size='small'>
-                        {liked ? <ThumbUpIcon sx={{ marginLeft: '2px' }} /> : <ThumbUpOffAltIcon sx={{ marginLeft: '2px' }} />
-                        }
-                      </Fab>
-                      <Box sx={{ marginLeft: '4px' }} >{count}</Box>
+        <Stack p={2} height='78vh' spacing={1} sx={{ overflow: 'auto' }} >
+          {
+            chatMessages.length ? chatMessages?.map((data, index) => (
+              <>
+                <MessagesBox chatMessages={chatMessages} data={data} key={index} />
+              </>
+            )) : (<Stack bgcolor={blue[300]} textAlign={'center'}><Typography variant='h4'>Let's Start Chat</Typography></Stack>)
+          }
 
-                    </Stack>
-                  </Stack>
-                  <Box></Box>
-                </Box>
-              </Stack>
-            </>
-          )) : (<Stack bgcolor={blue[300]} textAlign={'center'}><Typography variant='h5'>Let's Start Chat</Typography></Stack>)
-        }
+          {/*3. EMOJI CONTAINER */}
+          {isEmojiPickerOpen && (
+            <div style={{ position: 'absolute', bottom: 0, right: 0, zIndex: '1000' }}>
+              <EmojiPicker onEmojiClick={handleEmojiClick} />
+            </div>
+          )}
+        </Stack>
 
-        {isEmojiPickerOpen && (
-          <div style={{ position: 'absolute', bottom: 0, right: 0, zIndex: '1000' }}>
-            <EmojiPicker onEmojiClick={handleEmojiClick} />
-          </div>
-        )}
-</Stack>
-<Stack direction="row"
+        {/* 4. TEXT FIELD */}
+        <Stack direction="row"
           spacing={2}
           padding={2}
           sx={theme => ({
@@ -168,7 +134,6 @@ console.log(length);
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
-
             id="message"
             label="Type your message"
             variant="outlined"
@@ -181,7 +146,6 @@ console.log(length);
           <IconButton aria-label="insert emoji" onClick={() => setIsEmojiPickerOpen(!isEmojiPickerOpen)}>
             <InsertEmoticonIcon />
           </IconButton>
-
         </Stack>
       </Stack>
     </Stack>
