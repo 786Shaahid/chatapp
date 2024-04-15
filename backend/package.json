@@ -9,7 +9,7 @@
     "backend-start": "node index.js",
     "build": "npm run frontend-build",
     "start": "npm run build && npm run backend-start",
-    "frontend": "cd ../frontend && npm run start",
+    "frontend": "cd ../frontend && npm run dev",
     "backend": "nodemon index.js"
   },
   "keywords": [],
