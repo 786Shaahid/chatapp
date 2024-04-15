@@ -32,14 +32,14 @@ PORT
 
 ###  On Destop 
 
-![App Screenshot](./screenshots/desk1.jpg)
+![App Screenshot](./screenshot/desk1.jpg)
 
 ### On Destop
 
-![App Screenshot](./screenshots/desk2.jpg)
+![App Screenshot](./screenshot/desk2.jpg)
 
 ### On Mobile screen
 
-![App Screenshot](./screenshots/mobile.jpg)
+![App Screenshot](./screenshot/mobile.jpg)
 
 
