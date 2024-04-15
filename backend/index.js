@@ -40,10 +40,10 @@ const io= new Server(server,{
     
       if (process.env.NODE_ENV === "production") {
           // Serve static files from the client's build/dist folder
-          app.use(express.static(path.join(path.resolve(), "../frontend", "dist")));
+          app.use(express.static(path.join(path.resolve(), "../frontend", "build")));
           // Route for serving the React app
           app.get("*", (req, res) => {
-            return res.sendFile(path.join(path.resolve(), "../frontend", "dist", "index.html"));
+            return res.sendFile(path.join(path.resolve(), "../frontend", "build", "index.html"));
           });
           
         }
