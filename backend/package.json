@@ -6,9 +6,10 @@
   "type": "module",
   "scripts": {
     "frontend-build": "cd ../frontend  &&  npm run build",
-    "backend-start": "node index.js",
-    "build": "SET NODE_ENV=production npm run frontend-build",
-    "start": "npm run build && npm run backend-start",
+    "backend-start": "node backend/server.js",
+    "backend-prod": "SET NODE_ENV=production && node backend/server.js",
+    "build": " npm run frontend-build",
+    "start": "npm run build && npm run backend-prod",
     "frontend": "cd ../frontend && npm run dev",
     "backend": "nodemon index.js"
   },
