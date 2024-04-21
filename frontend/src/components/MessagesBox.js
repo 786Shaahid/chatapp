@@ -10,7 +10,7 @@ function MessagesBox({ chatMessages, data }) {
   const [likes, setLikes] = useState(0);
   const [likedBy, setLikedBy] = useState([]);
 
-
+ 
   const handleClick = (userId) => {
     let item = chatMessages.find(item => item.id === userId);
     if (likedBy.includes(userId)) {
