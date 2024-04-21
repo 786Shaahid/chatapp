@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "frontend-build": "cd frontend  &&  npm run build",
+    "frontend-build": "cd frontend && npm install &&  npm run build",
     "backend-start": "node backend/server.js",
     "backend-prod": "SET NODE_ENV=production && node backend/index.js",
     "build": " npm run frontend-build",
