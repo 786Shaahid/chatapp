@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "frontend-build": "cd frontend && npm run build",
+    "frontend-build": "cd frontend && react-scripts build",
     "backend-start": "node backend/index.js",
     "build": "npm run frontend-build",
     "start": "npm run build && npm run backend-start",
