@@ -38,7 +38,7 @@ const io= new Server(server,{
       });
       // console.log('hii',path.join(path.resolve(), "../frontend", "dist"));
     console.log(path.resolve());
-      if (process.env.NODE_ENV.trim() === "production") {
+      if (process.env.NODE_ENV === "production") {
           // Serve static files from the client's build/dist folder
           app.use(express.static(path.join(path.resolve(), "frontend", "build")));
           // Route for serving the React app
@@ -46,16 +46,14 @@ const io= new Server(server,{
             return res.sendFile(path.join(path.resolve(), "frontend", "build", "index.html"));
           });
           
-        }
-      
-      // } else {
-      //   app.all("/*", (req, res) => {
-      //     return res.status(400).json({
-      //       success: false,
-      //       error: "no api found",
-      //     });
-      //   });
-      // }
+        } else {
+        app.all("/", (req, res) => {
+          return res.status(400).json({
+            success: false,
+            error: "APIs is running",
+          });
+        });
+      }
       
       
 
