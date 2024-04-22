@@ -31,7 +31,7 @@ function Chat({ user, setUsers, length }) {
   //2. socket connection
   const socket = useMemo(
     () =>
-      io('http://localhost:8080', { transports: ["websocket", 'polling'] }),
+      io('https://shahid-chat.onrender.com', { transports: ["websocket", 'polling'] }),
     []
   );
   //  SET MESSAGE FROM SOCKET   
