@@ -7,7 +7,7 @@
     "frontend-build": "cd frontend && npm install && npm run build",
     "backend-start": "node backend/index.js",
     "build": "npm run frontend-build",
-    "start": "npm run build && npm run backend-start",
+    "start": "npm run install && npm run backend-start",
     "frontend": "cd frontend && npm run dev",
     "backend": "nodemon backend/index.js"
  },
