@@ -22,7 +22,7 @@ Install dependencies for backend
   npm install
 ```
 
-Install dependencies for backend
+Install dependencies for frontend
 
 ```bash
   cd frontend && npm install
